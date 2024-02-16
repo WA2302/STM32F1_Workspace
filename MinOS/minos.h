@@ -5,7 +5,7 @@
   * @version V2.1
   * @date    04-November-2023
   * @brief   This is the head file for MinOS, a NO GRAB OS for embedded system.
-  *          OSTaskCreate( task, stk ) @USAGE OSTaskCreate( Task00, 0x80 );
+  *          TASK_REG_LEVEL_x()        @USAGE TASK_REG_LEVEL_3(Demo1_task, 0x80);
   *          void OSStart( void );     @USAGE OSStart( );
   *          void OSTimeDly( ticks );  @USAGE OSTimeDly( 1000 );
   *          OSWait( con )             @USAGE OSWait( var >= 1 );
@@ -22,7 +22,7 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx.h"
+#include "stm32f10x.h"
 #include "minos_conf.h"
 
 typedef struct os_tcb {
@@ -48,12 +48,12 @@ typedef struct {
     uint32_t *p_Stack;
 } task_t;
 #define TASK_REG(name,stk,level)                                               \
-                static void task_##name(void) __attribute__((__used__));                                 \
-                static uint32_t stack_##name[stk] __attribute__((__used__));                             \
-                const static task_t task_tbl_##name __attribute__((__used__)) \
+                static void task_##name(void) __attribute__((__used__));       \
+                static uint32_t stack_##name[stk] __attribute__((__used__));   \
+                const static task_t task_tbl_##name __attribute__((__used__))  \
                 __attribute__((__section__("_task_level." #level))) = {        \
                     .task_fnc = task_##name,                                   \
-                    .p_Stack = &stack_##name[stk-1]                             \
+                    .p_Stack = &stack_##name[stk-1]                            \
                 };                                                             \
                 static void task_##name(void)
                               

@@ -116,7 +116,7 @@ __inline void __Sched (void)
   */
 void OSStart (void)
 {
-    __NVIC_SetPriority ( PendSV_IRQn, 0xFF );  /** SCB->SHP[10] = 0xFF;      **/
+    NVIC_SetPriority ( PendSV_IRQn, 0xFF );  /** SCB->SHP[10] = 0xFF;      **/
     __set_PSP(0);
     __Sched();
     __enable_irq();
